@@ -18,7 +18,7 @@ interface ContainerCardProps {
 
 export function ContainerCard({ container, onDelete }: ContainerCardProps) {
   const isActive = true; // Simulación de estado (sustituir por lógica real)
-
+  console.log(container);
   return (
     <Card className="w-full hover:shadow-lg transition-all duration-300">
       <CardHeader className="pb-4">
@@ -63,14 +63,6 @@ export function ContainerCard({ container, onDelete }: ContainerCardProps) {
             </span>
             <span className="font-medium bg-background px-3 py-1 rounded-md">
               {container.ports.container}
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">
-              Base de Datos:
-            </span>
-            <span className="font-medium bg-background px-3 py-1 rounded-md">
-              {container.environment.POSTGRES_DB}
             </span>
           </div>
         </div>

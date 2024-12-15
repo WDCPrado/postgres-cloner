@@ -25,8 +25,8 @@ const items = [
     icon: Container,
   },
   {
-    title: "Bases de datos",
-    url: "/databases",
+    title: "Clonar Base de Datos",
+    url: "/clone",
     icon: Database,
   },
 ];

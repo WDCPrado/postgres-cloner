@@ -1,4 +1,4 @@
-import { postgresContainerUseCases } from "@/app/inyections/postgres-containers";
+import { postgresContainerUseCases } from "@/app/inyections";
 import { ContainersList } from "./components/containers-list";
 
 export default async function ContainersPage() {

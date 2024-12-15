@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { postgresContainerUseCases } from "../../inyections/postgres-containers";
+import { postgresContainerUseCases } from "../../inyections";
 import Docker from "dockerode";
 
 describe("Integración de PostgresContainerUseCases", () => {

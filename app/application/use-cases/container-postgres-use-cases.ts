@@ -29,7 +29,6 @@ export class PostgresContainerUseCases {
     if (!config.ports.host || !config.ports.container) {
       throw new Error("Los puertos host y container son obligatorios.");
     }
-
     console.log(`Creando el contenedor: ${config.containerName}`);
     await this.containerOperations.crearContenedor(config);
     console.log(`Contenedor ${config.containerName} creado exitosamente.`);

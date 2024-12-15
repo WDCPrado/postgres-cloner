@@ -58,9 +58,9 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
         container: 5432,
       },
       environment: {
-        POSTGRES_USER: "",
-        POSTGRES_PASSWORD: "",
-        POSTGRES_DB: "",
+        POSTGRES_USER: "postgres",
+        POSTGRES_PASSWORD: "postgres",
+        POSTGRES_DB: "postgres",
         POSTGRES_PORT: 5432,
         POSTGRES_HOST: "localhost",
       },
