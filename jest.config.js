@@ -1,10 +1,11 @@
 module.exports = {
   preset: "ts-jest",
-  testEnvironment: "node", // Puedes usar "jsdom" si estás probando lógica del frontend
+  testEnvironment: "node", // O "jsdom" si pruebas lógica de frontend
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/app/$1", // Soporte para paths si usas tsconfig.json con aliases
+    "^@/(.*)$": "<rootDir>/$1",
   },
-  testMatch: ["**/*.spec.ts", "**/*.test.ts"], // Ubicación de los archivos de test
-  testTimeout: 30000, // Aumenta el timeout a 30 segundos
+  // Ajustar testMatch para que Jest busque únicamente dentro de /tests
+  testMatch: ["<rootDir>/tests/**/*.spec.ts", "<rootDir>/tests/**/*.test.ts"],
+  testTimeout: 30000,
 };

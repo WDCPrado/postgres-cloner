@@ -18,7 +18,7 @@ interface ContainerCardProps {
 
 export function ContainerCard({ container, onDelete }: ContainerCardProps) {
   const isActive = true; // Simulación de estado (sustituir por lógica real)
-  console.log(container);
+
   return (
     <Card className="w-full hover:shadow-lg transition-all duration-300">
       <CardHeader className="pb-4">

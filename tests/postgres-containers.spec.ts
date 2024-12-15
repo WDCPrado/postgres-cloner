@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { postgresContainerUseCases } from "../../inyections";
+import { postgresContainerUseCases } from "@/app/inyections";
 import Docker from "dockerode";
 
 describe("Integración de PostgresContainerUseCases", () => {
@@ -10,15 +10,7 @@ describe("Integración de PostgresContainerUseCases", () => {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   afterAll(async () => {
-    console.log("Limpiando el contenedor después del test");
-    await delay(5000); // Esperar 5 segundos antes de intentar limpiar
-    const container = docker.getContainer(testContainerName);
-    try {
-      await container.stop();
-      await container.remove();
-    } catch (error: any) {
-      console.log("El contenedor ya estaba eliminado o no existía.", error);
-    }
+    console.log("Test finalizado");
   });
 
   it("debería crear un contenedor PostgreSQL", async () => {

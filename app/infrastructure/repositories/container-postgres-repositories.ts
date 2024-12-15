@@ -22,7 +22,6 @@ export class DockerPostgresRepository implements ContainerOperations {
   async crearContenedor(config: PostgresContainer): Promise<void> {
     const { containerName, image, ports, environment, volumes } = config;
 
-    console.log(config);
     const envVariables = [
       `POSTGRES_USER=${environment.POSTGRES_USER}`,
       `POSTGRES_PASSWORD=${environment.POSTGRES_PASSWORD}`,
