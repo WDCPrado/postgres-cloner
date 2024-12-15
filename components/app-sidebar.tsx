@@ -1,4 +1,4 @@
-import { Database, Home, Container } from "lucide-react";
+import { Home, Container } from "lucide-react";
 
 import {
   Sidebar,
@@ -20,14 +20,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Contenedores",
+    title: "Contenedores PostgreSQL",
     url: "/containers",
     icon: Container,
-  },
-  {
-    title: "Clonar Base de Datos",
-    url: "/clone",
-    icon: Database,
   },
 ];
 
