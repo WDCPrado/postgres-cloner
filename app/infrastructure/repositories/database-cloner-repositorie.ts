@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// app/infrastructure/repositories/database-cloner-repositorie.ts
-
 import {
   CloneResult,
   DatabaseCloner,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { postgresContainerUseCases } from "@/app/inyections";
 import Docker from "dockerode";
 

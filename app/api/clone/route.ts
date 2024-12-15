@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// app/api/clone/route.ts
-
 import { databaseClonerUseCases } from "@/app/inyections";
 import { NextResponse } from "next/server";
 

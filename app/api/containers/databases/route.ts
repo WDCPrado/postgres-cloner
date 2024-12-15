@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// app/api/containers/databases/route.ts
-
 import { postgresContainerUseCases } from "@/app/inyections";
 import { NextResponse } from "next/server";
 

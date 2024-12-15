@@ -1,4 +1,3 @@
-// app/(presentation)/clone/components/clone-progress.tsx
 "use client";
 
 import { Progress } from "@/components/ui/progress";

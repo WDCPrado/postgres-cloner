@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { postgresContainerUseCases } from "@/app/inyections";
 import { NextResponse } from "next/server";
 
