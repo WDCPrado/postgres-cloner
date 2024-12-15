@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { PostgresContainer } from "@/app/domain/interfaces/container-postgres";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import * as z from "zod";
 
 const containerFormSchema = z.object({
@@ -45,6 +46,8 @@ interface ContainerDialogProps {
 }
 
 export function ContainerDialog({ container }: ContainerDialogProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<ContainerFormValues>({
     resolver: zodResolver(containerFormSchema),
     defaultValues: container || {
@@ -65,6 +68,7 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
   });
 
   const onSubmit = async (values: ContainerFormValues) => {
+    setIsLoading(true);
     try {
       const response = await fetch("/api/containers", {
         method: "POST",
@@ -81,12 +85,15 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
       window.location.reload();
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onDelete = async () => {
     if (!container?.containerName) return;
 
+    setIsLoading(true);
     try {
       const response = await fetch(
         `/api/containers?name=${container.containerName}`,
@@ -102,6 +109,8 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
       window.location.reload();
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,7 +136,11 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                 <FormItem>
                   <FormLabel>Nombre del Contenedor</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      aria-label="Nombre del Contenedor"
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,7 +154,11 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                 <FormItem>
                   <FormLabel>Imagen</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      aria-label="Imagen"
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -156,7 +173,12 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                   <FormItem>
                     <FormLabel>Puerto Host</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        aria-label="Puerto Host"
+                        disabled={isLoading}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -170,7 +192,12 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                   <FormItem>
                     <FormLabel>Puerto Contenedor</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        aria-label="Puerto Contenedor"
+                        disabled={isLoading}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -185,7 +212,11 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                 <FormItem>
                   <FormLabel>Usuario PostgreSQL</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      aria-label="Usuario PostgreSQL"
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -199,7 +230,12 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                 <FormItem>
                   <FormLabel>Contraseña PostgreSQL</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input
+                      type="password"
+                      {...field}
+                      aria-label="Contraseña PostgreSQL"
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -213,7 +249,11 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                 <FormItem>
                   <FormLabel>Base de Datos</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      aria-label="Base de Datos"
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -221,12 +261,21 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
             />
 
             <div className="flex justify-between">
-              <Button type="submit">
-                {container ? "Actualizar" : "Crear"}
+              <Button type="submit" disabled={isLoading}>
+                {isLoading
+                  ? "Procesando..."
+                  : container
+                  ? "Actualizar"
+                  : "Crear"}
               </Button>
               {container && (
-                <Button type="button" variant="destructive" onClick={onDelete}>
-                  Eliminar
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={onDelete}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Procesando..." : "Eliminar"}
                 </Button>
               )}
             </div>

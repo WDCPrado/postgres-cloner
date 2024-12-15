@@ -1,4 +1,4 @@
-import { Database, Home } from "lucide-react";
+import { Database, Home, Container } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,6 +22,11 @@ const items = [
   {
     title: "Contenedores",
     url: "/containers",
+    icon: Container,
+  },
+  {
+    title: "Bases de datos",
+    url: "/databases",
     icon: Database,
   },
 ];
