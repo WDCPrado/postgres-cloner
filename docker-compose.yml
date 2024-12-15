@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  database-cloner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock # Añade esta línea
+    network_mode: "host"

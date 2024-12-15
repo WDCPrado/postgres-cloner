@@ -196,7 +196,7 @@ export function ContainerDialog({ container }: ContainerDialogProps) {
                         type="number"
                         {...field}
                         aria-label="Puerto Contenedor"
-                        disabled={isLoading}
+                        disabled
                       />
                     </FormControl>
                     <FormMessage />
