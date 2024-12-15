@@ -6,7 +6,8 @@ import { databaseClonerUseCases } from "@/app/inyections";
 import { NextResponse } from "next/server";
 
 function parsePostgresUrl(url: string) {
-  const regex = /postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/;
+  // Regex modificado para hacer el puerto opcional
+  const regex = /postgres:\/\/([^:]+):([^@]+)@([^:\/]+)(?::(\d+))?\/(.+)/;
   const matches = url.match(regex);
 
   if (!matches) {
@@ -17,13 +18,12 @@ function parsePostgresUrl(url: string) {
 
   return {
     host,
-    port: parseInt(port),
+    port: port ? parseInt(port) : 5432, // Puerto por defecto si no se especifica
     database,
     user,
     password,
   };
 }
-
 export async function POST(request: Request) {
   try {
     const { source, destination } = await request.json();

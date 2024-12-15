@@ -4,6 +4,10 @@ import {
   ContainerOperations,
   PostgresContainer,
 } from "../../domain/interfaces/container-postgres";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execPromise = promisify(exec);
 
 /**
  * Repositorio que implementa las operaciones de contenedores PostgreSQL utilizando Docker
@@ -73,28 +77,34 @@ export class DockerPostgresRepository implements ContainerOperations {
       const container = this.docker.getContainer(containerInfo.Id);
       const inspectData = await container.inspect();
 
+      // Extraer las variables de entorno
+      const envVars = inspectData.Config.Env.reduce((acc: any, env: string) => {
+        const [key, value] = env.split("=");
+        acc[key] = value;
+        return acc;
+      }, {});
+
+      // Convertir explícitamente los puertos a número
+      const hostPort = containerInfo.Ports[0]?.PublicPort
+        ? Number(containerInfo.Ports[0].PublicPort)
+        : 5432;
+      const containerPort = containerInfo.Ports[0]?.PrivatePort
+        ? Number(containerInfo.Ports[0].PrivatePort)
+        : 5432;
+
       return {
         containerName: nombreContenedor,
         image: inspectData.Config.Image,
         ports: {
-          host: containerInfo.Ports[0]?.PublicPort || 0,
-          container: containerInfo.Ports[0]?.PrivatePort || 0,
+          host: hostPort,
+          container: containerPort,
         },
         environment: {
-          POSTGRES_USER:
-            inspectData.Config.Env.find((env: any) =>
-              env.startsWith("POSTGRES_USER=")
-            )?.split("=")[1] || "",
-          POSTGRES_PASSWORD:
-            inspectData.Config.Env.find((env: any) =>
-              env.startsWith("POSTGRES_PASSWORD=")
-            )?.split("=")[1] || "",
-          POSTGRES_DB:
-            inspectData.Config.Env.find((env: any) =>
-              env.startsWith("POSTGRES_DB=")
-            )?.split("=")[1] || "",
-          POSTGRES_PORT: 5432,
-          POSTGRES_HOST: "localhost",
+          POSTGRES_USER: envVars.POSTGRES_USER || "postgres",
+          POSTGRES_PASSWORD: envVars.POSTGRES_PASSWORD || "postgres",
+          POSTGRES_DB: envVars.POSTGRES_DB || "postgres",
+          POSTGRES_PORT: Number(envVars.POSTGRES_PORT) || 5432,
+          POSTGRES_HOST: envVars.POSTGRES_HOST || "localhost",
         },
       };
     } catch (error) {
@@ -132,24 +142,48 @@ export class DockerPostgresRepository implements ContainerOperations {
   async listarContenedores(): Promise<PostgresContainer[]> {
     try {
       const containers = await this.docker.listContainers();
-      return containers.map((container: any) => ({
-        containerName: container.Names[0]?.replace("/", ""),
-        image: container.Image,
-        ports: {
-          host: container.Ports[0]?.PublicPort || 0,
-          container: container.Ports[0]?.PrivatePort || 0,
-        },
-        environment: {
-          POSTGRES_USER: "", // Estas variables requieren inspección adicional
-          POSTGRES_PASSWORD: "",
-          POSTGRES_DB: "",
-          POSTGRES_PORT: 5432,
-          POSTGRES_HOST: "localhost",
-        },
-      }));
+      const containerDetails = await Promise.all(
+        containers.map(async (container: any) => {
+          const containerName = container.Names[0]?.replace("/", "");
+          return await this.buscarContenedor(containerName);
+        })
+      );
+
+      return containerDetails.filter(
+        (container): container is PostgresContainer => container !== null
+      );
     } catch (error) {
       console.error("Error al listar los contenedores:", error);
       throw error;
+    }
+  }
+
+  async listarBasesDeDatos(containerName: string): Promise<string[]> {
+    try {
+      const container = await this.buscarContenedor(containerName);
+      if (!container) {
+        throw new Error(`Contenedor ${containerName} no encontrado`);
+      }
+
+      const comando = `PGPASSWORD="${container.environment.POSTGRES_PASSWORD}" psql -h localhost -p ${container.ports.container} -U ${container.environment.POSTGRES_USER} -l -t | cut -d'|' -f1 | sed -e 's/ //g' -e '/^$/d'`;
+
+      const { stdout } = await execPromise(
+        `docker exec ${containerName} /bin/bash -c "${comando}"`
+      );
+
+      // Filtrar bases de datos del sistema
+      const databaseList = stdout
+        .split("\n")
+        .map((db: any) => db.trim())
+        .filter((db: any) => db && !["template0", "template1"].includes(db));
+
+      return databaseList;
+    } catch (error: any) {
+      console.error(
+        `Error al listar bases de datos del contenedor ${containerName}:`,
+        error
+      );
+      throw new Error(`Error al listar bases de datos: ${error.message}`);
     }
   }
 }

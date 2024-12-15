@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ContainerOperations,
   PostgresContainer,
@@ -81,5 +82,26 @@ export class PostgresContainerUseCases {
     console.log(`Eliminando el contenedor: ${containerName}`);
     await this.containerOperations.eliminarContenedor(containerName);
     console.log(`Contenedor ${containerName} eliminado exitosamente.`);
+  }
+
+  /**
+   * Listar todas las bases de datos en un contenedor específico
+   * @param containerName Nombre del contenedor
+   * @returns Lista de nombres de bases de datos
+   */
+  async listDatabases(containerName: string): Promise<string[]> {
+    if (!containerName) {
+      throw new Error("El nombre del contenedor es requerido");
+    }
+
+    try {
+      const databases = await this.containerOperations.listarBasesDeDatos(
+        containerName
+      );
+      return databases;
+    } catch (error: any) {
+      console.error(`Error al listar bases de datos: ${error.message}`);
+      throw error;
+    }
   }
 }

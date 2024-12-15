@@ -59,4 +59,11 @@ export interface ContainerOperations {
    * @returns Lista de contenedores activos con detalles básicos
    */
   listarContenedores(): Promise<PostgresContainer[]>;
+
+  /**
+   * Listar todas las bases de datos en un contenedor PostgreSQL específico
+   * @param containerName Nombre del contenedor
+   * @returns Lista de nombres de bases de datos
+   */
+  listarBasesDeDatos(containerName: string): Promise<string[]>;
 }
