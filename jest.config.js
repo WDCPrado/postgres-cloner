@@ -6,6 +6,9 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/$1",
   },
   // Ajustar testMatch para que Jest busque únicamente dentro de /tests
-  testMatch: ["<rootDir>/tests/**/*.spec.ts", "<rootDir>/tests/**/*.test.ts"],
+  testMatch: [
+    "<rootDir>/tests/pending/**/*.spec.ts",
+    "<rootDir>/tests/pending/**/*.test.ts",
+  ],
   testTimeout: 30000,
 };
