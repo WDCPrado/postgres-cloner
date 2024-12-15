@@ -20,7 +20,7 @@ const items = [
     icon: Home,
   },
   {
-    title: "Contenedores PostgreSQL",
+    title: "Contenedores",
     url: "/containers",
     icon: Container,
   },

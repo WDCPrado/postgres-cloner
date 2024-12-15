@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import {
   Form,
   FormControl,
@@ -53,6 +54,7 @@ export function DatabaseListModal({
   isOpen,
   onClose,
 }: DatabaseListModalProps) {
+  const { toast } = useToast();
   const [databases, setDatabases] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -154,6 +156,15 @@ export function DatabaseListModal({
     onClose();
     form.reset();
   };
+
+  const handleCopyConnection = (db: string) => {
+    navigator.clipboard.writeText(getConnectionString(db));
+    toast({
+      title: "Texto copiado",
+      description: "URL de conexión copiada al portapapeles",
+    });
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onCloseModal}>
       <DialogContent className="max-w-7xl">
@@ -269,11 +280,7 @@ export function DatabaseListModal({
                               <code>{getConnectionString(db)}</code>
                             </pre>
                             <button
-                              onClick={() =>
-                                navigator.clipboard.writeText(
-                                  getConnectionString(db)
-                                )
-                              }
+                              onClick={() => handleCopyConnection(db)}
                               className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90"
                             >
                               Copiar
