@@ -7,7 +7,6 @@ Database Cloner es una aplicación web que permite gestionar y clonar bases de d
 - Gestión de contenedores Docker para bases de datos
 - Creación y eliminación de contenedores PostgreSQL
 - Clonación de bases de datos entre contenedores
-- Monitoreo del progreso de clonación en tiempo real
 - Interfaz intuitiva y moderna
 - Soporte para tema claro/oscuro
 
@@ -83,21 +82,11 @@ database-cloner/
 ## Próximas Características
 
 - [ ] Soporte para múltiples motores de bases de datos
-  - [ ] MySQL
-  - [ ] MongoDB
-  - [ ] SQL Server
+  - [ ] PostgreSQL
 - [ ] Programación de tareas de clonación
 - [ ] Respaldos automáticos
 - [ ] Gestión de permisos y usuarios
 - [ ] Métricas y monitoreo
-
-## Contribuir
-
-1. Haz un fork del proyecto
-2. Crea una rama para tu característica (`git checkout -b feature/AmazingFeature`)
-3. Realiza tus cambios y haz commit (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
 
 ## Licencia
 
