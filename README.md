@@ -2,6 +2,8 @@
 
 Database Cloner es una aplicación web que permite gestionar y clonar bases de datos de manera sencilla utilizando contenedores Docker. Actualmente soporta PostgreSQL, con planes futuros para expandir a otros motores de bases de datos.
 
+![image](https://github.com/user-attachments/assets/b02d0464-5040-434c-ab11-3848b34b61fd)
+
 ## Características
 
 - Gestión de contenedores Docker para bases de datos
