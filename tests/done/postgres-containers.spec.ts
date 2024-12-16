@@ -2,7 +2,12 @@ import { postgresContainerUseCases } from "@/app/inyections";
 import Docker from "dockerode";
 
 describe("Integración de PostgresContainerUseCases", () => {
-  const docker = new Docker();
+  const docker = new Docker({
+    socketPath:
+      process.platform === "win32"
+        ? "//./pipe/docker_engine"
+        : "/var/run/docker.sock",
+  });
   const testContainerName = "test-container-integration";
 
   const delay = async (ms: number) =>
